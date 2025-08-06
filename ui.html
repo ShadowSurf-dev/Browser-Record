@@ -1,0 +1,79 @@
+<!-- ui.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Screen Recorder</title>
+  <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.12.4/dist/ffmpeg.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #121212;
+      color: white;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .left, .right {
+      padding: 20px;
+    }
+    .left {
+      width: 60%;
+      border-right: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    button, select {
+      padding: 10px;
+      background: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover, select:hover {
+      background: #444;
+    }
+    a {
+      color: #0af;
+      margin-top: 10px;
+    }
+    video {
+      max-width: 100%;
+      border: 1px solid #555;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="left" id="videoContainer">
+    <div id="placeholder">⏺️ Recording will appear here</div>
+  </div>
+  <div class="right">
+    <label for="audioOption">Audio Source:</label>
+    <select id="audioOption">
+      <option value="tab">📺 Tab Audio</option>
+      <option value="mic">🎤 Microphone</option>
+      <option value="both">🔊 Both (Tab + Mic)</option>
+      <option value="none">❌ No Audio</option>
+    </select>
+    <button id="startBtn">🎬 Start Recording</button>
+    <button id="pauseBtn" disabled>⏸️ Pause</button>
+    <button id="stopBtn" disabled>⏹️ Stop</button>
+  </div>
+  <script src="ui.js"></script>
+</body>
+</html>
