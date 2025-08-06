@@ -1,2 +1,2 @@
-# Browser-Record-Extension
+# Browser-Record
 Records your browser
