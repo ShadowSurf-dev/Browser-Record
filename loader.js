@@ -1,7 +1,7 @@
 // loader.js
 
 (async function () {
-  const RAW_HTML_URL = "https://raw.githubusercontent.com/yourusername/yourrepo/main/ui.html";
+  const RAW_HTML_URL = "https://raw.githubusercontent.com/ShadowSurf-dev/Browser-Record/refs/heads/main/ui.html";
 
   try {
     const response = await fetch(RAW_HTML_URL);
