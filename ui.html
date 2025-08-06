@@ -74,6 +74,17 @@
     <button id="pauseBtn" disabled>⏸️ Pause</button>
     <button id="stopBtn" disabled>⏹️ Stop</button>
   </div>
-  <script src="https://raw.githubusercontent.com/ShadowSurf-dev/Browser-Record/refs/heads/main/ui.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('https://raw.githubusercontent.com/ShadowSurf-dev/Browser-Record/refs/heads/main/ui.js');
+        const js = await res.text();
+        eval(js);
+      } catch (err) {
+        console.error('Script load error:', err);
+      }
+    });
+  </script>
+
 </body>
 </html>
