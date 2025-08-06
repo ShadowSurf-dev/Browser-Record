@@ -1,5 +1,3 @@
-// ui.js
-
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const pauseBtn = document.getElementById('pauseBtn');
@@ -50,7 +48,7 @@ startBtn.onclick = async () => {
       if (e.data.size > 0) chunks.push(e.data);
     };
 
-    recorder.onstop = async () => {
+    recorder.onstop = () => {
       const blob = new Blob(chunks, { type: 'video/webm' });
       const url = URL.createObjectURL(blob);
 
@@ -66,29 +64,6 @@ startBtn.onclick = async () => {
       container.innerHTML = '';
       container.appendChild(video);
       container.appendChild(linkWebm);
-
-      const status = document.createElement('div');
-      status.textContent = 'Converting to MP4...';
-      status.style.marginTop = '10px';
-      container.appendChild(status);
-
-      const { createFFmpeg, fetchFile } = FFmpeg;
-      const ffmpeg = createFFmpeg({ log: false });
-      await ffmpeg.load();
-
-      ffmpeg.FS('writeFile', 'input.webm', await fetchFile(blob));
-      await ffmpeg.run('-i', 'input.webm', 'output.mp4');
-      const mp4Data = ffmpeg.FS('readFile', 'output.mp4');
-      const mp4Blob = new Blob([mp4Data.buffer], { type: 'video/mp4' });
-      const mp4Url = URL.createObjectURL(mp4Blob);
-
-      const linkMp4 = document.createElement('a');
-      linkMp4.href = mp4Url;
-      linkMp4.download = 'recording.mp4';
-      linkMp4.textContent = '⬇️ Download .mp4';
-      container.appendChild(linkMp4);
-
-      status.textContent = 'Conversion complete.';
     };
 
     recorder.start();
