@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Screen Recorder</title>
+  <link rel="stylesheet" href="ui.css">
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body>
+  <div class="left" id="videoContainer">
+    <button id="toggleClipList" style="width: 100%;">📂 Toggle Clips</button>
+    <div id="clipList" style="max-height: 70vh; overflow-y: auto; margin-top: 10px;"></div>
+  </div>
+
+  <div class="right">
+    <label for="audioOption">Audio Source:</label>
+    <select id="audioOption">
+      <option value="tab">📺 Tab Audio</option>
+      <option value="mic">🎤 Microphone</option>
+      <option value="both">🔊 Both (Tab + Mic)</option>
+      <option value="none">❌ No Audio</option>
+    </select>
+
+    <button id="startBtn">🎬 Start Recording</button>
+
+    <hr>
+
+    <label for="bufferDuration">Replay Buffer Duration (mins):</label>
+    <input id="bufferDuration" type="number" min="1" max="10" value="5">
+
+    <button id="startBufferBtn">📹 Start Replay Buffer</button>
+    <button id="clipBtn" disabled>✂️ Clip</button>
+
+    <hr>
+    <h3>Download all recordings</h3>
+    <button id="downloadAllBtn">🗜️ Download All as ZIP</button>
+  </div>
+
+  <script src="ui.js"></script>
+</body>
+</html>
