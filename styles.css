@@ -1,0 +1,70 @@
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #121212;
+      color: white;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+    .left, .right {
+      padding: 20px;
+      overflow-y: auto;
+    }
+    .left {
+      width: 60%;
+      border-right: 1px solid #333;
+      display: flex;
+      flex-direction: column;
+    }
+    .right {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    button, select, input {
+      padding: 10px;
+      background: #333;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    button:hover, select:hover, input:hover {
+      background: #444;
+    }
+    video {
+      max-width: 100%;
+      border: 1px solid #555;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+    hr {
+      border-color: #444;
+    }
+    .clip-item {
+      border: 1px solid #555;
+      border-radius: 6px;
+      background: #1e1e1e;
+      margin-bottom: 10px;
+    }
+    .clip-toggle {
+      width: 100%;
+      text-align: left;
+      background: #2a2a2a;
+      font-weight: bold;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+    }
+    .clip-toggle:hover {
+      background: #3a3a3a;
+    }
+    .clip-content {
+      display: none;
+      padding: 10px;
+    }
+  
