@@ -8,7 +8,7 @@ const audioOption = document.getElementById('audioOption');
 const clipList = document.getElementById('clipList');
 
 let stream, recorder, chunks = [], isBuffering = false, bufferChunks = [], bufferRecorder, bufferStream;
-let bufferMaxDuration = 10 * 60 * 1000;
+let bufferMaxDuration = 10 * 60 * 1000; // max 10 minutes including 1 min buffer
 let clipEntries = [];
 
 function formatTime(date = new Date()) {
@@ -97,13 +97,12 @@ startBtn.onclick = async () => {
     recorder.onstop = () => {
       const blob = new Blob(chunks, { type: 'video/webm' });
       addClipToList(blob, 'Recording');
-      startBtn.disabled = false; // Re-enable after stop
+      startBtn.disabled = false;
     };
 
     recorder.start();
     startBtn.disabled = true;
 
-    // Stop recording when stream ends (user clicks Chrome's stop share)
     stream.getVideoTracks()[0].addEventListener('ended', () => {
       if (recorder && recorder.state !== 'inactive') {
         recorder.stop();
@@ -130,7 +129,8 @@ startBufferBtn.onclick = async () => {
     return;
   }
 
-  bufferMaxDuration = Math.min(10, parseInt(bufferDurationInput.value)) * 60 * 1000;
+  const userMinutes = Math.min(10, parseInt(bufferDurationInput.value));
+  bufferMaxDuration = (userMinutes + 1) * 60 * 1000; // Add 1 minute buffer
   bufferStream = await getCombinedStream();
   bufferChunks = [];
   isBuffering = true;
@@ -147,29 +147,20 @@ startBufferBtn.onclick = async () => {
     }
   };
 
-  bufferRecorder.start(1000);
+  bufferRecorder.start(1000); // Emit every second
 };
 
-  clipBtn.onclick = () => {
-    if (!isBuffering || bufferChunks.length === 0) return;
-  
-    // Request flush of last chunk
-    bufferRecorder.requestData();
-  
-    // Delay ensures all chunks have time to arrive
-    setTimeout(() => {
-      const validChunks = bufferChunks.filter(c => c.timestamp >= (Date.now() - bufferMaxDuration));
-      const blob = new Blob(validChunks.map(c => c.data), { type: 'video/webm' });
-  
-      if (blob.size < 1024) {
-        alert('⚠️ Clip failed or is too short. Please try again in a few seconds.');
-        return;
-      }
-  
-      addClipToList(blob, 'Clip');
-    }, 500); // Delay 0.5s to let recorder flush last chunk
-  };
+clipBtn.onclick = () => {
+  if (!isBuffering || bufferChunks.length === 0) return;
 
+  const now = Date.now();
+  const userClipLength = Math.min(10, parseInt(bufferDurationInput.value)) * 60 * 1000;
+  const safeClipStart = now - userClipLength;
+  const validChunks = bufferChunks.filter(c => c.timestamp >= safeClipStart);
+
+  const blob = new Blob(validChunks.map(c => c.data), { type: 'video/webm' });
+  addClipToList(blob, 'Clip');
+};
 
 downloadAllBtn.onclick = async () => {
   if (clipEntries.length === 0) return alert('No clips to download!');
