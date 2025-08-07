@@ -150,12 +150,26 @@ startBufferBtn.onclick = async () => {
   bufferRecorder.start(1000);
 };
 
-clipBtn.onclick = () => {
-  if (!isBuffering || bufferChunks.length === 0) return;
-  const validChunks = bufferChunks.filter(c => c.timestamp >= (Date.now() - bufferMaxDuration));
-  const blob = new Blob(validChunks.map(c => c.data), { type: 'video/webm' });
-  addClipToList(blob, 'Clip');
-};
+  clipBtn.onclick = () => {
+    if (!isBuffering || bufferChunks.length === 0) return;
+  
+    // Request flush of last chunk
+    bufferRecorder.requestData();
+  
+    // Delay ensures all chunks have time to arrive
+    setTimeout(() => {
+      const validChunks = bufferChunks.filter(c => c.timestamp >= (Date.now() - bufferMaxDuration));
+      const blob = new Blob(validChunks.map(c => c.data), { type: 'video/webm' });
+  
+      if (blob.size < 1024) {
+        alert('⚠️ Clip failed or is too short. Please try again in a few seconds.');
+        return;
+      }
+  
+      addClipToList(blob, 'Clip');
+    }, 500); // Delay 0.5s to let recorder flush last chunk
+  };
+
 
 downloadAllBtn.onclick = async () => {
   if (clipEntries.length === 0) return alert('No clips to download!');
